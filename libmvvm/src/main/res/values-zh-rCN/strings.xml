@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">libMvvm</string>
+    <string name="loading">载入中…</string>
+    <string name="empty_data">没有数据</string>
+    <string name="not_save_title">提示</string>
+    <string name="not_save_msg">返回将不保存所设置的内容，确定要返回吗？</string>
+    <string name="error_unknown">出错了</string>
+</resources>

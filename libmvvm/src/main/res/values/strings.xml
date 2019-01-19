@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">LibMvvm</string>
+    <string name="app_name">libMvvm</string>
+    <string name="loading">Loading…</string>
+    <string name="empty_data">No datas</string>
+    <string name="not_save_title">Tip</string>
+    <string name="not_save_msg">Return will not save the set content, are you sure you want to return?</string>
+    <string name="error_unknown">Unknown error</string>
 </resources>

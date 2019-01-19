@@ -1,0 +1,148 @@
+package net.childman.libmvvm.activity;
+
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
+
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.ViewDataBinding;
+import net.childman.libmvvm.R;
+import net.childman.libmvvm.common.UiAction;
+import net.childman.libmvvm.utils.ActivityCollector;
+
+
+/**
+ * Activity 基类
+ * Created by czm on 18-3-7.
+ */
+
+public abstract class BaseActivity extends RxAppCompatActivity {
+    protected TextView mToolbarTitle;
+    protected UiAction mUiAction;
+    static {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        }
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ActivityCollector.addActivity(this);
+        initUiAction();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    protected boolean isTranslucentStatus(){
+        return false;
+    }
+    protected int getStatusBarColor() {return Color.TRANSPARENT;}
+    protected void initUiAction(){
+        mUiAction = new UiAction(this);
+    }
+
+    protected void initStatusBar(){
+        if(!isTranslucentStatus()) return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Android5.0之后的沉浸式状态栏写法
+            Window window = getWindow();
+            View decorView = window.getDecorView();
+            // 两个标志位要结合使用，表示让应用的主体内容占用系统状态栏的空间
+            // 第三个标志位可让底部导航栏变透明View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            decorView.setSystemUiVisibility(option);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getStatusBarColor());
+        } else {
+            // Android4.4的沉浸式状态栏写法
+            Window window = getWindow();
+            WindowManager.LayoutParams attributes = window.getAttributes();
+            int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            // 底部导航栏也可以弄成透明的
+            //int flagTranslucentNavigation = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
+            attributes.flags |= flagTranslucentStatus;
+            //attributes.flags |= flagTranslucentNavigation;
+            window.setAttributes(attributes);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//android6.0以后可以对状态栏文字颜色和图标进行修改
+            getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+    }
+
+    protected Toolbar initToolbar(int resId){
+        initStatusBar();
+        Toolbar toolbar = findViewById(resId);
+        if(toolbar != null) setSupportActionBar(toolbar);
+        mToolbarTitle = findViewById(R.id.toolbar_title);
+        initActionBar();
+        return toolbar;
+    }
+
+    protected void initActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+        }
+        setTitle(getTitle());
+    }
+
+    protected Toolbar initToolbar(ViewDataBinding binding, int resId){
+        initStatusBar();
+        Toolbar toolbar = binding.getRoot().findViewById(resId);
+        mToolbarTitle = binding.getRoot().findViewById(R.id.toolbar_title);
+        if(toolbar != null){
+            setSupportActionBar(toolbar);
+        }
+        initActionBar();
+        return toolbar;
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        if(mToolbarTitle!=null){
+            super.setTitle("");
+            mToolbarTitle.setText(title);
+        }else{
+            super.setTitle(title);
+        }
+    }
+
+    @Override
+    public void setTitle(int titleId) {
+        if(mToolbarTitle!=null){
+            super.setTitle("");
+            mToolbarTitle.setText(titleId);
+        }else {
+            super.setTitle(titleId);
+        }
+    }
+
+}
