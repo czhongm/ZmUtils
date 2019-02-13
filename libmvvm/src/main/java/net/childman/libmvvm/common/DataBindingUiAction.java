@@ -88,5 +88,14 @@ public class DataBindingUiAction extends UiAction {
                 loadingAction(msgData);
             }
         });
+
+        viewModel.getClickEvent().observe(owner, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(integer != null && mOnViewClickListener != null){
+                    mOnViewClickListener.onViewClick(integer);
+                }
+            }
+        });
     }
 }

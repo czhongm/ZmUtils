@@ -1,5 +1,7 @@
 package net.childman.libmvvm.viewmodel;
 
+import android.view.View;
+
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
@@ -79,6 +81,7 @@ public class BaseViewModel extends ViewModel {
     private final SingleLiveEvent<MsgData> tipEvent = new SingleLiveEvent<>();
     private MutableLiveData<Boolean> uploading = new MutableLiveData<>();
     private final SingleLiveEvent<Boolean> redirectLoginEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Integer> clickEvent = new SingleLiveEvent<>();
 
     public SingleLiveEvent<MsgData> getUploadEvent() {
         return uploadEvent;
@@ -94,6 +97,10 @@ public class BaseViewModel extends ViewModel {
 
     public SingleLiveEvent<Boolean> getRedirectLoginEvent() {
         return redirectLoginEvent;
+    }
+
+    public SingleLiveEvent<Integer> getClickEvent() {
+        return clickEvent;
     }
 
     @Override
@@ -146,6 +153,14 @@ public class BaseViewModel extends ViewModel {
             }
         }
     };
+
+    /**
+     * 通用的点击事件
+     * @param view view
+     */
+    public void onViewClick(View view){
+        clickEvent.setValue(view.getId());
+    }
 
     protected void addDisposable(Disposable disposable){
         mCompositeDisposable.add(disposable);

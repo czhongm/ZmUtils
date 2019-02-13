@@ -17,6 +17,16 @@ public class UiAction {
     private Toast mToast;
     private LoadingDialog mLoadingDialog;
 
+    protected OnViewClickListener mOnViewClickListener;
+
+    public OnViewClickListener getOnViewClickListener() {
+        return mOnViewClickListener;
+    }
+
+    public void setOnViewClickListener(OnViewClickListener onViewClickListener) {
+        mOnViewClickListener = onViewClickListener;
+    }
+
     public UiAction(Context context) {
         mContext = context;
     }
@@ -93,5 +103,9 @@ public class UiAction {
     }
 
     public void listenEvent(BaseViewModel viewModel, LifecycleOwner owner) {
+    }
+
+    public interface OnViewClickListener{
+        void onViewClick(int id);
     }
 }
