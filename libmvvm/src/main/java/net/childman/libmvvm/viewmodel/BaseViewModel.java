@@ -180,7 +180,7 @@ public class BaseViewModel extends ViewModel {
                     .map(new Function<HttpResult<T>, ServerResult<T>>() {
                         @Override
                         public ServerResult<T> apply(HttpResult<T> tHttpResult) throws Exception {
-                            return tHttpResult.getData();
+                            return tHttpResult.getServerResult();
                         }
                     });
         }
