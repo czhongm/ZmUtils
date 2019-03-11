@@ -234,6 +234,7 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
                     public void accept(ServerResult<String> stringServerResult) throws Exception {
                         deleteSuccEvent.setValue(item);
                         mTotalNum--; //???这里需要么
+                        mDataList.remove(item);
                     }
                 }, mThrowableConsumer);
         addDisposable(disposable);
