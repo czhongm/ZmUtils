@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import net.childman.libmvvm.R;
 import net.childman.libmvvm.adapter.DataBindingAdapter;
 import net.childman.libmvvm.viewmodel.BaseListViewModel;
 
@@ -23,6 +24,8 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener {
     private BaseListViewModel<T> mViewModel;
     private OnListDataChangeListener mOnListDataChangeListener;
     private OnItemEventListener<T> mOnItemEventListener;
+    private int mEmptyLayoutRes;
+    private RecyclerView mRecyclerView;
 
     public BaseListHelper(LifecycleOwner lifecycleOwner, BaseListViewModel<T> viewModel) {
         mLifecycleOwner = lifecycleOwner;
@@ -30,9 +33,10 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener {
     }
 
     private void initRecyclerView(RecyclerView recyclerView,@LayoutRes int itemLayoutRes, @LayoutRes int emtpyLayoutRes){
+        mRecyclerView = recyclerView;
+        mEmptyLayoutRes = emtpyLayoutRes;
         mAdapter = new DataBindingAdapter<>(itemLayoutRes, new ArrayList<>(),mViewModel);
         mAdapter.bindToRecyclerView(recyclerView);
-        mAdapter.setEmptyView(emtpyLayoutRes,recyclerView);
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -45,6 +49,7 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener {
         if(mViewModel.getDataList().size()>0){
             setNewData(mViewModel.getDataList());
         }else{
+            mAdapter.setEmptyView(R.layout.loading,recyclerView);
             mViewModel.refresh();
         }
     }
@@ -120,10 +125,16 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener {
     }
 
     protected void setNewData(List<T> dataList){
+        if(mRecyclerView!= null && dataList.size()==0){
+            mAdapter.setEmptyView(mEmptyLayoutRes,mRecyclerView);
+        }
         mAdapter.setNewData(dataList);
     }
     protected void appendData(List<T> dataList){
         mAdapter.addData(dataList);
+        if(mRecyclerView != null && mAdapter.getItemCount()==0){
+            mAdapter.setEmptyView(mEmptyLayoutRes,mRecyclerView);
+        }
     }
 
     public void setOnItemEventListener(OnItemEventListener<T> onItemEventListener) {
