@@ -5,7 +5,7 @@ package net.childman.libmvvm.model;
  * Created by czm on 18-3-19.
  */
 
-public interface ServerResult<T> {
+public interface IServerResult<T> {
     boolean isSuccess();
     int getCount();
     int getCode();

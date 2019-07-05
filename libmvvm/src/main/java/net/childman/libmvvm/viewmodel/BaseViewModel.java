@@ -19,8 +19,8 @@ import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import net.childman.libmvvm.BuildConfig;
-import net.childman.libmvvm.model.HttpResult;
-import net.childman.libmvvm.model.ServerResult;
+import net.childman.libmvvm.model.IHttpResult;
+import net.childman.libmvvm.model.IServerResult;
 import net.childman.libmvvm.utils.SingleLiveEvent;
 
 /**
@@ -170,16 +170,16 @@ public class BaseViewModel extends ViewModel {
         return new CheckResultTransformer<>();
     }
 
-    public class CheckResultTransformer<T> implements FlowableTransformer<HttpResult<T>, ServerResult<T>> {
+    public class CheckResultTransformer<T> implements FlowableTransformer<IHttpResult<T>, IServerResult<T>> {
 
         @Override
-        public Publisher<ServerResult<T>> apply(Flowable<HttpResult<T>> upstream) {
+        public Publisher<IServerResult<T>> apply(Flowable<IHttpResult<T>> upstream) {
             return upstream
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .filter(new Predicate<HttpResult<T>>() {
+                    .filter(new Predicate<IHttpResult<T>>() {
                         @Override
-                        public boolean test(HttpResult<T> tHttpResult) throws Exception {
+                        public boolean test(IHttpResult<T> tHttpResult) throws Exception {
                             if(tHttpResult.isSuccess()){
                                 return true;
                             }else{
@@ -192,9 +192,9 @@ public class BaseViewModel extends ViewModel {
                             }
                         }
                     })
-                    .map(new Function<HttpResult<T>, ServerResult<T>>() {
+                    .map(new Function<IHttpResult<T>, IServerResult<T>>() {
                         @Override
-                        public ServerResult<T> apply(HttpResult<T> tHttpResult) throws Exception {
+                        public IServerResult<T> apply(IHttpResult<T> tHttpResult) throws Exception {
                             return tHttpResult.getServerResult();
                         }
                     });

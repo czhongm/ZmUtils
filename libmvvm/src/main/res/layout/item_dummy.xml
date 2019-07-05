@@ -3,7 +3,7 @@
     <data>
         <variable
             name="item"
-            type="net.childman.libmvvm.model.ServerResult" />
+            type="net.childman.libmvvm.model.IServerResult" />
     </data>
 <LinearLayout
     android:orientation="vertical" android:layout_width="match_parent"
