@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModel;
 import net.childman.libmvvm.BR;
 
 public class DataBindingAdapter<T> extends BaseQuickAdapter<T,DataBindingAdapter.ViewHolder> {
-    private ViewModel mViewModel;
+    protected ViewModel mViewModel;
 
     public DataBindingAdapter(int layoutResId, @Nullable List<T> data) {
         super(layoutResId, data);
