@@ -20,8 +20,12 @@ public abstract class BaseListActivity<T,E extends ViewDataBinding> extends Base
     @Override
     protected void initView() {
         super.initView();
-        mBaseListHelper = new BaseListHelper<>(this,mViewModel);
+        mBaseListHelper = createHelper();
         mBaseListHelper.initView(getRecyclerView(),getItemViewRes(),getEmptyViewRes());
+    }
+
+    protected BaseListHelper<T> createHelper(){
+        return new BaseListHelper<>(this,mViewModel);
     }
 
     protected abstract @NonNull RecyclerView getRecyclerView();

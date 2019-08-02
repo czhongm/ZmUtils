@@ -35,7 +35,7 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener {
     private void initRecyclerView(RecyclerView recyclerView,@LayoutRes int itemLayoutRes, @LayoutRes int emtpyLayoutRes){
         mRecyclerView = recyclerView;
         mEmptyLayoutRes = emtpyLayoutRes;
-        mAdapter = new DataBindingAdapter<>(itemLayoutRes, new ArrayList<>(),mViewModel);
+        mAdapter = createAdapter(itemLayoutRes);
         mAdapter.bindToRecyclerView(recyclerView);
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -52,6 +52,10 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener {
             mAdapter.setEmptyView(R.layout.loading,recyclerView);
             mViewModel.refresh();
         }
+    }
+
+    protected DataBindingAdapter<T> createAdapter(@LayoutRes int itemLayoutRes){
+        return new DataBindingAdapter<>(itemLayoutRes, new ArrayList<>(),mViewModel);
     }
 
     public void initView(@NonNull RecyclerView recyclerView, @LayoutRes int itemLayoutRes, @LayoutRes int emptyLayoutRes) {
