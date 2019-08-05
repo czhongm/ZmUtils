@@ -128,6 +128,11 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener {
         mAdapter.notifyDataSetChanged();
     }
 
+    public void notifyItemChanged(T t){
+        int position = mAdapter.getData().indexOf(t);
+        mAdapter.notifyItemChanged(position);
+    }
+
     protected void setNewData(List<T> dataList){
         if(mRecyclerView!= null && dataList.size()==0){
             mAdapter.setEmptyView(mEmptyLayoutRes,mRecyclerView);
