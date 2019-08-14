@@ -63,7 +63,16 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     protected boolean isTranslucentStatus(){
-        return false;
+        return getTypeValueBoolean(R.attr.isTranslucentStatus);
+    }
+
+    private boolean getTypeValueBoolean(int attr) {
+        TypedValue typedValue = new TypedValue();
+        int[] attribute = new int[]{attr};
+        TypedArray array = obtainStyledAttributes(typedValue.resourceId, attribute);
+        boolean statusFont = array.getBoolean(0, false);
+        array.recycle();
+        return statusFont;
     }
 
     private int getTypeValueColor(int attr) {
@@ -86,7 +95,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
 
     protected int getStatusBarColor() {
-        int color = getTypeValueColor(R.attr.actionBarColor);
+        int color = getTypeValueColor(R.attr.statusBarColor);
         if(color == -1) {
             return Color.TRANSPARENT;
         }else{
