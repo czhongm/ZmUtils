@@ -1,8 +1,8 @@
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarColor">@color/white</item>
-        <item name="statusBarColor">#000</item>
-        <item name="actionBarTextColor">#000</item>
+        <item name="customActionBarColor">@color/white</item>
+        <item name="customStatusBarColor">#000</item>
+        <item name="customActionBarTextColor">#000</item>
     </style>
 
 
@@ -35,7 +35,7 @@
     </style>
     <style name="toolbar_title">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">?attr/actionBarTextColor</item>
+        <item name="android:textColor">?attr/customActionBarTextColor</item>
         <item name="android:drawablePadding">5dp</item>
     </style>
 

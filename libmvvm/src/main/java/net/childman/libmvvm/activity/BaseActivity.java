@@ -1,6 +1,5 @@
 package net.childman.libmvvm.activity;
 
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -13,13 +12,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.ViewDataBinding;
+
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
+
 import net.childman.libmvvm.R;
 import net.childman.libmvvm.common.UiAction;
 import net.childman.libmvvm.utils.ActivityCollector;
@@ -95,7 +95,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
 
     protected int getStatusBarColor() {
-        int color = getTypeValueColor(R.attr.statusBarColor);
+        int color = getTypeValueColor(R.attr.customStatusBarColor);
         if(color == -1) {
             return Color.TRANSPARENT;
         }else{
@@ -149,7 +149,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            Drawable drawable = getTypeValueDrawable(R.attr.backArrowIcon);
+            Drawable drawable = getTypeValueDrawable(R.attr.customBackArrowIcon);
             if(drawable == null) {
                 actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
             }else{

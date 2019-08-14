@@ -6,9 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="actionBarColor">@color/white</item>
-        <item name="statusBarColor">#000</item>
-        <item name="actionBarTextColor">#000</item>
+        <item name="customActionBarColor">@color/white</item>
+        <item name="customStatusBarColor">#000</item>
+        <item name="customActionBarTextColor">#000</item>
     </style>
 
 </resources>
