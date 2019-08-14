@@ -32,5 +32,8 @@
         <attr name="wheel_can_touch" format="boolean" />
         <attr name="wheel_scroll_only_one_circle" format="boolean" />
     </declare-styleable>
-
+    <attr name="statusBarColor" format="reference|color" />
+    <attr name="backArrowIcon" format="reference" />
+    <attr name="actionBarColor" format="reference|color" />
+    <attr name="actionBarTextColor" format="reference|color" />
 </resources>

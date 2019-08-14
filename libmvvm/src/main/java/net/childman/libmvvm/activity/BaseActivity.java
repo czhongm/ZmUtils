@@ -1,8 +1,12 @@
 package net.childman.libmvvm.activity;
 
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -61,7 +65,34 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected boolean isTranslucentStatus(){
         return false;
     }
-    protected int getStatusBarColor() {return Color.TRANSPARENT;}
+
+    private int getTypeValueColor(int attr) {
+        TypedValue typedValue = new TypedValue();
+        int[] attribute = new int[]{attr};
+        TypedArray array = obtainStyledAttributes(typedValue.resourceId, attribute);
+        int color = array.getColor(0, -1);
+        array.recycle();
+        return color;
+    }
+
+    private Drawable getTypeValueDrawable(int attr) {
+        TypedValue typedValue = new TypedValue();
+        int[] attribute = new int[]{attr};
+        TypedArray array = obtainStyledAttributes(typedValue.resourceId, attribute);
+        Drawable drawable = array.getDrawable(0);
+        array.recycle();
+        return drawable;
+    }
+
+
+    protected int getStatusBarColor() {
+        int color = getTypeValueColor(R.attr.actionBarColor);
+        if(color == -1) {
+            return Color.TRANSPARENT;
+        }else{
+            return color;
+        }
+    }
     protected void initUiAction(){
         mUiAction = new UiAction(this);
     }
@@ -109,7 +140,12 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+            Drawable drawable = getTypeValueDrawable(R.attr.backArrowIcon);
+            if(drawable == null) {
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+            }else{
+                actionBar.setHomeAsUpIndicator(drawable);
+            }
         }
         setTitle(getTitle());
     }
