@@ -1,5 +1,6 @@
 package net.childman.libmvvm.activity;
 
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -66,10 +67,17 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         return getTypeValueBoolean(R.attr.isTranslucentStatus);
     }
 
+    private int getStatusBarHeight() {
+        Resources resources = getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen","android");
+        int height = resources.getDimensionPixelSize(resourceId);
+        return height;
+    }
+
     private boolean getTypeValueBoolean(int attr) {
         TypedValue typedValue = new TypedValue();
         int[] attribute = new int[]{attr};
-        TypedArray array = obtainStyledAttributes(typedValue.resourceId, attribute);
+        TypedArray array = getTheme().obtainStyledAttributes(typedValue.resourceId, attribute);
         boolean statusFont = array.getBoolean(0, false);
         array.recycle();
         return statusFont;
@@ -78,7 +86,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     private int getTypeValueColor(int attr) {
         TypedValue typedValue = new TypedValue();
         int[] attribute = new int[]{attr};
-        TypedArray array = obtainStyledAttributes(typedValue.resourceId, attribute);
+        TypedArray array = getTheme().obtainStyledAttributes(typedValue.resourceId, attribute);
         int color = array.getColor(0, -1);
         array.recycle();
         return color;
@@ -87,7 +95,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     private Drawable getTypeValueDrawable(int attr) {
         TypedValue typedValue = new TypedValue();
         int[] attribute = new int[]{attr};
-        TypedArray array = obtainStyledAttributes(typedValue.resourceId, attribute);
+        TypedArray array = getTheme().obtainStyledAttributes(typedValue.resourceId, attribute);
         Drawable drawable = array.getDrawable(0);
         array.recycle();
         return drawable;

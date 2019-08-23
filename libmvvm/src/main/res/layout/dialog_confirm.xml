@@ -20,7 +20,7 @@
             android:layout_marginBottom="0dp"
             android:gravity="center"
             android:textColor="@color/dialog_title"
-            android:textSize="17sp"
+            android:textSize="15sp"
             tools:text="对话框标题" />
 
         <LinearLayout
@@ -36,7 +36,7 @@
                 android:layout_margin="16dp"
                 android:gravity="center"
                 android:textColor="@color/dialog_msg"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 tools:text="是否真的删除？" />
         </LinearLayout>
 
