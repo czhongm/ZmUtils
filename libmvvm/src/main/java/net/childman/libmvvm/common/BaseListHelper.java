@@ -169,4 +169,8 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener {
     public void setOnListDataChangeListener(OnListDataChangeListener onListDataChangeListener) {
         mOnListDataChangeListener = onListDataChangeListener;
     }
+
+    public DataBindingAdapter<T> getAdapter(){
+        return mAdapter;
+    }
 }
