@@ -45,6 +45,12 @@ public class DataBindingAdapter<T> extends BaseQuickAdapter<T,DataBindingAdapter
         return view;
     }
 
+    public void notifyItemChanged(T item){
+        int index = getData().indexOf(item);
+        if(index != -1){
+            notifyItemChanged(index + getHeaderLayoutCount());
+        }
+    }
 
     public static class ViewHolder extends BaseViewHolder {
         public ViewHolder(View view) {
