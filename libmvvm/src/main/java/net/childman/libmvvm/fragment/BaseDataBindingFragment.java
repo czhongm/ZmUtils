@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProviders;
+
 import net.childman.libmvvm.BR;
 import net.childman.libmvvm.common.DataBindingUiAction;
 import net.childman.libmvvm.viewmodel.BaseViewModel;
@@ -48,6 +49,15 @@ public abstract class BaseDataBindingFragment<T extends BaseViewModel,E extends 
             listenEvent();
         }
         return mRootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRootView = null;
+        mDataBinding.unbind();
+        mDataBinding = null;
+        mViewModel = null;
     }
 
     protected void initData() {

@@ -2,9 +2,10 @@ package net.childman.libmvvm.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+
 import com.trello.rxlifecycle3.components.support.RxFragment;
 
-import androidx.annotation.Nullable;
 import net.childman.libmvvm.common.UiAction;
 
 public class BaseFragment extends RxFragment {
@@ -15,6 +16,13 @@ public class BaseFragment extends RxFragment {
         super.onCreate(savedInstanceState);
         initUiAction();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mUiAction = null;
+    }
+
     protected void initUiAction(){
         mUiAction = new UiAction(getContext());
     }

@@ -4,6 +4,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
+
 import net.childman.libmvvm.R;
 import net.childman.libmvvm.common.BaseListHelper;
 import net.childman.libmvvm.viewmodel.BaseListViewModel;
@@ -11,6 +12,12 @@ import net.childman.libmvvm.viewmodel.BaseListViewModel;
 
 public abstract class BaseListFragment<T,E extends ViewDataBinding> extends BaseDataBindingFragment<BaseListViewModel<T>,E> {
     protected BaseListHelper<T> mBaseListHelper;
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mBaseListHelper = null;
+    }
 
     @Override
     protected void listenEvent() {

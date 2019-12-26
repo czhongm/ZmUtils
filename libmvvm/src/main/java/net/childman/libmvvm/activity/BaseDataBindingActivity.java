@@ -19,7 +19,6 @@ public abstract class BaseDataBindingActivity<T extends BaseViewModel,E extends 
     protected T mViewModel;
     protected E mDataBinding;
 
-    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +30,14 @@ public abstract class BaseDataBindingActivity<T extends BaseViewModel,E extends 
         initData();
         initView();
         listenEvent();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mDataBinding.unbind();
+        mDataBinding = null;
+        mViewModel = null;
     }
 
     @Override

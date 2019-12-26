@@ -23,7 +23,6 @@ import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import net.childman.libmvvm.R;
 import net.childman.libmvvm.common.UiAction;
-import net.childman.libmvvm.utils.ActivityCollector;
 
 
 /**
@@ -43,14 +42,14 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityCollector.addActivity(this);
         initUiAction();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ActivityCollector.removeActivity(this);
+        mToolbarTitle = null;
+        mUiAction = null;
     }
 
     @Override

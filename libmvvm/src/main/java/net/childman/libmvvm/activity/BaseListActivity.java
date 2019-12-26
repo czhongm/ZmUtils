@@ -12,6 +12,12 @@ public abstract class BaseListActivity<T,E extends ViewDataBinding> extends Base
     protected BaseListHelper<T> mBaseListHelper;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mBaseListHelper = null;
+    }
+
+    @Override
     protected void listenEvent() {
         super.listenEvent();
         mBaseListHelper.listenEvent();
