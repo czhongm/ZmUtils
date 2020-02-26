@@ -33,6 +33,7 @@
         <attr name="wheel_scroll_only_one_circle" format="boolean" />
     </declare-styleable>
     <attr name="isTranslucentStatus" format="boolean"/>
+    <attr name="useStatusDarkColor" format="boolean" />
     <attr name="customStatusBarColor" format="reference|color" />
     <attr name="customBackArrowIcon" format="reference" />
     <attr name="customActionBarColor" format="reference|color" />

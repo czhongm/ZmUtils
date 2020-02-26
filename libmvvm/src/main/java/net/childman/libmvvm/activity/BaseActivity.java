@@ -33,6 +33,7 @@ import net.childman.libmvvm.common.UiAction;
 public abstract class BaseActivity extends RxAppCompatActivity {
     protected TextView mToolbarTitle;
     protected UiAction mUiAction;
+
     static {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -69,37 +70,35 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     private int getStatusBarHeight() {
         Resources resources = getResources();
         int resourceId = resources.getIdentifier("status_bar_height", "dimen","android");
-        int height = resources.getDimensionPixelSize(resourceId);
-        return height;
+        return resources.getDimensionPixelSize(resourceId);
+    }
+
+    private TypedArray getAttribute(int attr){
+        TypedValue typedValue = new TypedValue();
+        int[] attribute = new int[]{attr};
+        return obtainStyledAttributes(typedValue.resourceId, attribute);
     }
 
     private boolean getTypeValueBoolean(int attr) {
-        TypedValue typedValue = new TypedValue();
-        int[] attribute = new int[]{attr};
-        TypedArray array = getTheme().obtainStyledAttributes(typedValue.resourceId, attribute);
+        TypedArray array = getAttribute(attr);
         boolean statusFont = array.getBoolean(0, false);
         array.recycle();
         return statusFont;
     }
 
     private int getTypeValueColor(int attr) {
-        TypedValue typedValue = new TypedValue();
-        int[] attribute = new int[]{attr};
-        TypedArray array = getTheme().obtainStyledAttributes(typedValue.resourceId, attribute);
+        TypedArray array = getAttribute(attr);
         int color = array.getColor(0, -1);
         array.recycle();
         return color;
     }
 
     private Drawable getTypeValueDrawable(int attr) {
-        TypedValue typedValue = new TypedValue();
-        int[] attribute = new int[]{attr};
-        TypedArray array = getTheme().obtainStyledAttributes(typedValue.resourceId, attribute);
+        TypedArray array = getAttribute(attr);
         Drawable drawable = array.getDrawable(0);
         array.recycle();
         return drawable;
     }
-
 
     protected int getStatusBarColor() {
         int color = getTypeValueColor(R.attr.customStatusBarColor);
@@ -138,7 +137,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             //attributes.flags |= flagTranslucentNavigation;
             window.setAttributes(attributes);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//android6.0以后可以对状态栏文字颜色和图标进行修改
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getTypeValueBoolean(R.attr.useStatusDarkColor)) {//android6.0以后可以对状态栏文字颜色和图标进行修改
             getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
