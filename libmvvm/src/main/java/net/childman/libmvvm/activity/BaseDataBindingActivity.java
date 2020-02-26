@@ -1,7 +1,10 @@
 package net.childman.libmvvm.activity;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,9 +20,10 @@ public abstract class BaseDataBindingActivity<T extends BaseViewModel,E extends 
     protected E mDataBinding;
 
     @Override
-    public void setContentView(int layoutResID) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(getViewModelClass());
-        mDataBinding = DataBindingUtil.setContentView(this,layoutResID);
+        mDataBinding = DataBindingUtil.setContentView(this,getLayoutRes());
         mDataBinding.setVariable(BR.viewModel,mViewModel);
         mDataBinding.setLifecycleOwner(this);
 
@@ -40,6 +44,12 @@ public abstract class BaseDataBindingActivity<T extends BaseViewModel,E extends 
     protected void initUiAction() {
         mUiAction = new DataBindingUiAction(this);
     }
+
+    /**
+     * 获取布局Id
+     * @return layoutRes
+     */
+    protected abstract @LayoutRes int getLayoutRes();
 
     /**
      * 获取ViewModel class
