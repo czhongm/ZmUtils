@@ -1,21 +1,22 @@
 package net.childman.libmvvm.viewmodel;
 
 
+import androidx.lifecycle.MutableLiveData;
+
+import net.childman.libmvvm.model.IDataResult;
+import net.childman.libmvvm.utils.SingleLiveEvent;
+
 import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.lifecycle.MutableLiveData;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import net.childman.libmvvm.model.IHttpResult;
-import net.childman.libmvvm.model.IServerResult;
-import net.childman.libmvvm.utils.SingleLiveEvent;
 
 public abstract class BaseListViewModel<T> extends BaseViewModel {
     protected int mPageSize = 15;
@@ -95,11 +96,10 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
      */
     public void refresh() {
         if (mRefreshDisposable != null && !mRefreshDisposable.isDisposed()) return;
-        Flowable<IHttpResult<List<T>>> flowable = fetchList(1, mPageSize);
+        Flowable<IDataResult<List<T>>> flowable = fetchList(1, mPageSize);
         if(flowable == null) return;
         mRefreshDisposable = flowable
                 .subscribeOn(Schedulers.io())
-                .compose(this.<List<T>>applyCheckHttpResult())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
@@ -115,9 +115,9 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
                         if(!isSinglePage()) loadMoreEnableEvent.setValue(true); //重新开启loadMore
                     }
                 })
-                .subscribe(new Consumer<IServerResult<List<T>>>() {
+                .subscribe(new Consumer<IDataResult<List<T>>>() {
                     @Override
-                    public void accept(IServerResult<List<T>> listServerResult) throws Exception {
+                    public void accept(IDataResult<List<T>> listServerResult) throws Exception {
                         getExtraData(listServerResult);
                         mTotalNum = listServerResult.getCount();
                         mDataList.clear();
@@ -157,7 +157,7 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
      * 留出接口给获取附加信息
      * @param listServerResult 数据
      */
-    protected void getExtraData(IServerResult<List<T>> listServerResult){
+    protected void getExtraData(IDataResult<List<T>> listServerResult){
         //do nothing
     }
 
@@ -173,13 +173,12 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
             loadMoreErrorEvent.setValue(true);
             return;
         }
-        Flowable<IHttpResult<List<T>>> flowable = fetchList(mCurrentPage + 1, mPageSize);
+        Flowable<IDataResult<List<T>>> flowable = fetchList(mCurrentPage + 1, mPageSize);
         if(flowable == null) return;
         mRefreshDisposable = flowable
-                .compose(this.<List<T>>applyCheckHttpResult())
-                .subscribe(new Consumer<IServerResult<List<T>>>() {
+                .subscribe(new Consumer<IDataResult<List<T>>>() {
                     @Override
-                    public void accept(IServerResult<List<T>> listServerResult) throws Exception {
+                    public void accept(IDataResult<List<T>> listServerResult) throws Exception {
                         getExtraData(listServerResult);
                         mTotalNum = listServerResult.getCount();
                         List<T> dataList = listServerResult.getData();
@@ -205,9 +204,9 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
         addDisposable(mRefreshDisposable);
     }
 
-    protected abstract Flowable<IHttpResult<List<T>>> fetchList(int page, int limit);
+    protected abstract Flowable<IDataResult<List<T>>> fetchList(int page, int limit);
 
-    protected Flowable<IHttpResult<String>> deleteMethod(T item) {
+    protected Flowable<IDataResult<String>> deleteMethod(T item) {
         return null;
     }
 
@@ -224,14 +223,13 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
     }
 
     public void delete(final T item) {
-        Flowable<IHttpResult<String>> delMethod = deleteMethod(item);
+        Flowable<IDataResult<String>> delMethod = deleteMethod(item);
         if (delMethod == null) return;
         Disposable disposable = delMethod
-                .compose(this.<String>applyCheckHttpResult())
-                .compose(this.<IServerResult<String>>applyUploading())
-                .subscribe(new Consumer<IServerResult<String>>() {
+                .compose(this.<IDataResult<String>>applyUploading())
+                .subscribe(new Consumer<IDataResult<String>>() {
                     @Override
-                    public void accept(IServerResult<String> stringServerResult) throws Exception {
+                    public void accept(IDataResult<String> stringServerResult) throws Exception {
                         deleteSuccEvent.setValue(item);
                         mTotalNum--; //???这里需要么
                         mDataList.remove(item);

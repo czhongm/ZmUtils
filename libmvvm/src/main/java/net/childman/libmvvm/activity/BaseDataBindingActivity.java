@@ -1,14 +1,11 @@
 package net.childman.libmvvm.activity;
 
 import android.content.DialogInterface;
-import android.os.Bundle;
 
-import androidx.annotation.LayoutRes;
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+
 import net.childman.libmvvm.BR;
 import net.childman.libmvvm.R;
 import net.childman.libmvvm.common.DataBindingUiAction;
@@ -20,10 +17,9 @@ public abstract class BaseDataBindingActivity<T extends BaseViewModel,E extends 
     protected E mDataBinding;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(getViewModelClass());
-        mDataBinding = DataBindingUtil.setContentView(this,getLayoutRes());
+    public void setContentView(int layoutResID) {
+        mViewModel = new ViewModelProvider(this).get(getViewModelClass());
+        mDataBinding = DataBindingUtil.setContentView(this,layoutResID);
         mDataBinding.setVariable(BR.viewModel,mViewModel);
         mDataBinding.setLifecycleOwner(this);
 
@@ -46,17 +42,17 @@ public abstract class BaseDataBindingActivity<T extends BaseViewModel,E extends 
     }
 
     /**
-     * 获取布局Id
-     * @return layoutRes
-     */
-    protected abstract @LayoutRes int getLayoutRes();
-
-    /**
      * 获取ViewModel class
      * @return viewmodel class
      */
     protected abstract Class<? extends T> getViewModelClass();
 
+    protected T getViewModel(Class<T> tClass){
+        if(tClass.isInstance(mViewModel)){
+            return (T)mViewModel;
+        }
+        return null;
+    }
 
     protected void initData() {
 
@@ -72,22 +68,6 @@ public abstract class BaseDataBindingActivity<T extends BaseViewModel,E extends 
     protected void listenEvent(){
         if(mViewModel == null) return;
         mUiAction.listenEvent(mViewModel,this);
-
-        mViewModel.getRedirectLoginEvent().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                gotoLogin();
-            }
-        });
-    }
-
-    /**
-     * 去到重新登陆
-     */
-    protected void gotoLogin() {
-//        Intent intent = new Intent(this,LoginActivity.class);
-//        startActivity(intent);
-//        ActivityCollector.finishAll();
     }
 
     @Override

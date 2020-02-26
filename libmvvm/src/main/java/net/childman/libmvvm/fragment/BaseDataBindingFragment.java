@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import net.childman.libmvvm.BR;
@@ -38,17 +39,22 @@ public abstract class BaseDataBindingFragment<T extends BaseViewModel,E extends 
             mDataBinding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false);
             mRootView = mDataBinding.getRoot();
             if(useActivityViewModel() && this.getActivity()!=null){
-                mViewModel = ViewModelProviders.of(this.getActivity()).get(getViewModelClass());
+                mViewModel = new ViewModelProvider(requireActivity()).get(getViewModelClass());
             }else{
-                mViewModel = ViewModelProviders.of(this).get(getViewModelClass());
+                mViewModel = new ViewModelProvider(this).get(getViewModelClass());
             }
             mDataBinding.setVariable(BR.viewModel, mViewModel);
             mDataBinding.setLifecycleOwner(this);
-            initData();
-            initView();
-            listenEvent();
         }
         return mRootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initData();
+        initView();
+        listenEvent();
     }
 
     @Override
@@ -66,6 +72,13 @@ public abstract class BaseDataBindingFragment<T extends BaseViewModel,E extends 
 
     protected void initView() {
 
+    }
+
+    protected T getViewModel(Class<T> tClass){
+        if(tClass.isInstance(mViewModel)){
+            return (T)mViewModel;
+        }
+        return null;
     }
 
     /**

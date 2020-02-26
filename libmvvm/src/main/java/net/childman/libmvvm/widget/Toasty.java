@@ -3,6 +3,7 @@ package net.childman.libmvvm.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.CheckResult;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
@@ -60,17 +62,32 @@ public class Toasty {
     @CheckResult
     public static Toast custom(@NonNull Context context, @NonNull CharSequence message, @DrawableRes int resIcon,
                                int duration) {
+        return custom(context,R.layout.toast,message,resIcon,duration);
+    }
+
+    @SuppressLint("ShowToast")
+    @CheckResult
+    public static Toast custom(@NonNull Context context, @LayoutRes int layoutRes, @NonNull CharSequence message, @DrawableRes int resIcon,
+                               int duration) {
         final Toast currentToast = new Toast(context);
         currentToast.setDuration(duration);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(inflater == null) return null;
-        final View toastLayout = inflater.inflate(R.layout.toast, null);
+        final View toastLayout = inflater.inflate(layoutRes, null);
         final TextView toastTextView = toastLayout.findViewById(R.id.text);
-        Drawable drawableFrame = ContextCompat.getDrawable(context,resIcon);
-        if(drawableFrame == null) return null;
-        drawableFrame.setBounds(0, 0, drawableFrame.getIntrinsicWidth(), (int) (drawableFrame.getMinimumHeight()));
         toastTextView.setText(message);
-        toastTextView.setCompoundDrawables(null,drawableFrame,null,null);
+        Drawable drawableFrame = null;
+        try {
+            drawableFrame = ContextCompat.getDrawable(context, resIcon);
+        }catch (Resources.NotFoundException ex){
+            ex.printStackTrace();
+        }
+        if (drawableFrame != null) {
+            drawableFrame.setBounds(0, 0, drawableFrame.getIntrinsicWidth(), (int) (drawableFrame.getMinimumHeight()));
+            toastTextView.setCompoundDrawables(null, drawableFrame, null, null);
+        } else {
+            toastTextView.setCompoundDrawables(null, null, null, null);
+        }
         currentToast.setView(toastLayout);
         currentToast.setGravity(Gravity.CENTER,0,0);
         return currentToast;
@@ -80,11 +97,19 @@ public class Toasty {
                                   int duration) {
         final View toastLayout = toast.getView();
         final TextView toastTextView = toastLayout.findViewById(R.id.text);
-        Drawable drawableFrame = ContextCompat.getDrawable(context,resIcon);
-        if(drawableFrame == null) return;
-        drawableFrame.setBounds(0, 0, drawableFrame.getIntrinsicWidth(), (int) (drawableFrame.getMinimumHeight()));
         toastTextView.setText(message);
-        toastTextView.setCompoundDrawables(null,drawableFrame,null,null);
+        Drawable drawableFrame = null;
+        try {
+            drawableFrame = ContextCompat.getDrawable(context, resIcon);
+        }catch (Resources.NotFoundException ex){
+            ex.printStackTrace();
+        }
+        if (drawableFrame != null) {
+            drawableFrame.setBounds(0, 0, drawableFrame.getIntrinsicWidth(), (int) (drawableFrame.getMinimumHeight()));
+            toastTextView.setCompoundDrawables(null, drawableFrame, null, null);
+        } else {
+            toastTextView.setCompoundDrawables(null, null, null, null);
+        }
         toast.setGravity(Gravity.CENTER,0,0);
         toast.setDuration(duration);
         toast.show();

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import net.childman.libmvvm.R;
@@ -27,6 +28,7 @@ public class LoadingDialog extends Dialog {
         private boolean isShowMessage=true;
         private boolean isCancelable=false;
         private boolean isCancelOutside=false;
+        private int layoutRes = R.layout.dialog_loading;
 
 
         public Builder(Context context) {
@@ -46,6 +48,11 @@ public class LoadingDialog extends Dialog {
 
         public Builder setMessage(@StringRes int message){
             this.message=context.getString(message);
+            return this;
+        }
+
+        public Builder setLayout(@LayoutRes int layoutRes){
+            this.layoutRes = layoutRes;
             return this;
         }
 
@@ -83,7 +90,7 @@ public class LoadingDialog extends Dialog {
         public LoadingDialog create(){
 
             LayoutInflater inflater = LayoutInflater.from(context);
-            View view=inflater.inflate(R.layout.dialog_loading,null);
+            View view=inflater.inflate(layoutRes,null);
             LoadingDialog loadingDailog=new LoadingDialog(context,R.style.MyDialogStyle);
             TextView msgText= view.findViewById(R.id.tv_prompt);
             if(isShowMessage){

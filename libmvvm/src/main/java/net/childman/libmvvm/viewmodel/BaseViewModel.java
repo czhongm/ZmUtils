@@ -2,12 +2,16 @@ package net.childman.libmvvm.viewmodel;
 
 import android.view.View;
 
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscription;
-
 import androidx.annotation.StringRes;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import net.childman.libmvvm.BuildConfig;
+import net.childman.libmvvm.utils.SingleLiveEvent;
+
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscription;
+
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -15,13 +19,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
-import io.reactivex.schedulers.Schedulers;
-import net.childman.libmvvm.BuildConfig;
-import net.childman.libmvvm.model.IHttpResult;
-import net.childman.libmvvm.model.IServerResult;
-import net.childman.libmvvm.utils.SingleLiveEvent;
 
 /**
  * 基础ViewModel类
@@ -80,7 +77,6 @@ public class BaseViewModel extends ViewModel {
     private final SingleLiveEvent<MsgData> errorEvent = new SingleLiveEvent<>();
     private final SingleLiveEvent<MsgData> tipEvent = new SingleLiveEvent<>();
     private MutableLiveData<Boolean> uploading = new MutableLiveData<>();
-    private final SingleLiveEvent<Boolean> redirectLoginEvent = new SingleLiveEvent<>();
     private final SingleLiveEvent<Integer> clickEvent = new SingleLiveEvent<>();
 
     public SingleLiveEvent<MsgData> getUploadEvent() {
@@ -93,10 +89,6 @@ public class BaseViewModel extends ViewModel {
 
     public SingleLiveEvent<MsgData> getTipEvent() {
         return tipEvent;
-    }
-
-    public SingleLiveEvent<Boolean> getRedirectLoginEvent() {
-        return redirectLoginEvent;
     }
 
     public SingleLiveEvent<Integer> getClickEvent() {
@@ -164,41 +156,6 @@ public class BaseViewModel extends ViewModel {
 
     protected void addDisposable(Disposable disposable){
         mCompositeDisposable.add(disposable);
-    }
-
-    protected <T> CheckResultTransformer<T> applyCheckHttpResult(){
-        return new CheckResultTransformer<>();
-    }
-
-    public class CheckResultTransformer<T> implements FlowableTransformer<IHttpResult<T>, IServerResult<T>> {
-
-        @Override
-        public Publisher<IServerResult<T>> apply(Flowable<IHttpResult<T>> upstream) {
-            return upstream
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .filter(new Predicate<IHttpResult<T>>() {
-                        @Override
-                        public boolean test(IHttpResult<T> tHttpResult) throws Exception {
-                            if(tHttpResult.isSuccess()){
-                                return true;
-                            }else{
-                                showError(tHttpResult.getMsg()); //显示错误信息
-                                if(tHttpResult.getCode() == 700){
-                                    //DONE:重定向到登录页
-                                    redirectLoginEvent.setValue(true);
-                                }
-                                return false;
-                            }
-                        }
-                    })
-                    .map(new Function<IHttpResult<T>, IServerResult<T>>() {
-                        @Override
-                        public IServerResult<T> apply(IHttpResult<T> tHttpResult) throws Exception {
-                            return tHttpResult.getServerResult();
-                        }
-                    });
-        }
     }
 
     protected <T> UploadingTransformer<T> applyUploading(){

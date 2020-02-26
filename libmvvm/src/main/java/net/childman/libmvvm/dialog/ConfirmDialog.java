@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import net.childman.libmvvm.R;
 
@@ -33,6 +34,7 @@ public class ConfirmDialog extends Dialog {
         private OnClickListener positiveButtonClickListener;
         private OnClickListener negativeButtonClickListener;
         private boolean cancelable = true;
+        private int layoutRes = R.layout.dialog_confirm;
 
         public Builder(Context context) {
             this.context = context;
@@ -87,6 +89,11 @@ public class ConfirmDialog extends Dialog {
             return this;
         }
 
+        public Builder setLayout(@LayoutRes int layoutRes){
+            this.layoutRes = layoutRes;
+            return this;
+        }
+
         /**
          * Set the positive button resource and it's listener
          *
@@ -129,7 +136,7 @@ public class ConfirmDialog extends Dialog {
             if (inflater == null) return null;
 
             final ConfirmDialog dialog = new ConfirmDialog(context, R.style.MyDialogStyle);
-            View layout = inflater.inflate(R.layout.dialog_confirm, null);
+            View layout = inflater.inflate(layoutRes, null);
             dialog.addContentView(layout, new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 

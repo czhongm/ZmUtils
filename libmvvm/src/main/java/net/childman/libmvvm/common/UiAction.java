@@ -16,6 +16,9 @@ public class UiAction {
     private Context mContext;
     private Toast mToast;
     private LoadingDialog mLoadingDialog;
+    private boolean mUseIcon;
+    private int mToastLayoutRes;
+    private int mLoadingLayoutRes;
 
     protected OnViewClickListener mOnViewClickListener;
 
@@ -29,10 +32,26 @@ public class UiAction {
 
     public UiAction(Context context) {
         mContext = context;
+        mToastLayoutRes = R.layout.toast;
+        mLoadingLayoutRes = R.layout.dialog_loading;
     }
 
     private String getString(@StringRes int resId){
         return mContext.getString(resId);
+    }
+
+    public void setUseIcon(boolean useIcon) {
+        mUseIcon = useIcon;
+    }
+
+    public void setToastLayoutRes(int toastLayoutRes) {
+        mToastLayoutRes = toastLayoutRes;
+        mToast = null;
+    }
+
+    public void setLoadingLayoutRes(int loadingLayoutRes) {
+        mLoadingLayoutRes = loadingLayoutRes;
+        mLoadingDialog = null;
     }
 
     public void showToast(int resId){
@@ -40,13 +59,17 @@ public class UiAction {
     }
 
     public void showToast(String msg){
-        showToast(msg,R.drawable.succ);
+        if(mUseIcon) {
+            showToast(msg, R.drawable.succ);
+        }else{
+            showToast(msg,0);
+        }
     }
 
     public void showToast(String msg, @DrawableRes int resId){
         if(TextUtils.isEmpty(msg)) return;
         if(mToast == null){
-            mToast = Toasty.custom(mContext,msg,resId,Toast.LENGTH_SHORT);
+            mToast = Toasty.custom(mContext,mToastLayoutRes,msg,resId,Toast.LENGTH_SHORT);
             if(mToast!=null) mToast.show();
         }else{
             Toasty.showCustom(mContext,mToast,msg,resId,Toast.LENGTH_SHORT);
@@ -76,17 +99,13 @@ public class UiAction {
     }
 
     public void showLoading(@StringRes int msgId){
-        if(mLoadingDialog == null){
-            mLoadingDialog = new LoadingDialog.Builder(mContext)
-                    .create();
-        }
-        mLoadingDialog.setMessage(msgId);
-        mLoadingDialog.show();
+        showLoading(getString(msgId));
     }
 
     public void showLoading(String msg){
         if(mLoadingDialog == null){
             mLoadingDialog = new LoadingDialog.Builder(mContext)
+                    .setLayout(mLoadingLayoutRes)
                     .create();
         }
         mLoadingDialog.setMessage(msg);
