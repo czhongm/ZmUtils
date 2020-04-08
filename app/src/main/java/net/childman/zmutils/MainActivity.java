@@ -32,6 +32,18 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+        findViewById(R.id.imageView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("MainActivity","onClicked");
+            }
+        });
+        findViewById(R.id.imageView1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("MainActivity","onClicked1");
+            }
+        });
     }
 
     private void showProgressDialog() {

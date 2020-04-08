@@ -32,6 +32,16 @@
         <attr name="wheel_can_touch" format="boolean" />
         <attr name="wheel_scroll_only_one_circle" format="boolean" />
     </declare-styleable>
+
+    <attr name="pressedColor" format="color" />
+    <declare-styleable name="SingleImageButton">
+        <attr name="pressedColor" />
+    </declare-styleable>
+
+    <declare-styleable name="SingleTextViewButton">
+        <attr name="pressedColor" />
+    </declare-styleable>
+
     <attr name="isTranslucentStatus" format="boolean"/>
     <attr name="useStatusDarkColor" format="boolean" />
     <attr name="customStatusBarColor" format="reference|color" />

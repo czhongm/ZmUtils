@@ -17,6 +17,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
+
 import net.childman.libmvvm.R;
 
 public class Toasty {
@@ -77,10 +78,12 @@ public class Toasty {
         final TextView toastTextView = toastLayout.findViewById(R.id.text);
         toastTextView.setText(message);
         Drawable drawableFrame = null;
-        try {
-            drawableFrame = ContextCompat.getDrawable(context, resIcon);
-        }catch (Resources.NotFoundException ex){
-            ex.printStackTrace();
+        if(resIcon != 0) {
+            try {
+                drawableFrame = ContextCompat.getDrawable(context, resIcon);
+            } catch (Resources.NotFoundException ex) {
+//            ex.printStackTrace();
+            }
         }
         if (drawableFrame != null) {
             drawableFrame.setBounds(0, 0, drawableFrame.getIntrinsicWidth(), (int) (drawableFrame.getMinimumHeight()));
@@ -99,10 +102,12 @@ public class Toasty {
         final TextView toastTextView = toastLayout.findViewById(R.id.text);
         toastTextView.setText(message);
         Drawable drawableFrame = null;
-        try {
-            drawableFrame = ContextCompat.getDrawable(context, resIcon);
-        }catch (Resources.NotFoundException ex){
-            ex.printStackTrace();
+        if(resIcon != 0) {
+            try {
+                drawableFrame = ContextCompat.getDrawable(context, resIcon);
+            } catch (Resources.NotFoundException ex) {
+//            ex.printStackTrace();
+            }
         }
         if (drawableFrame != null) {
             drawableFrame.setBounds(0, 0, drawableFrame.getIntrinsicWidth(), (int) (drawableFrame.getMinimumHeight()));
