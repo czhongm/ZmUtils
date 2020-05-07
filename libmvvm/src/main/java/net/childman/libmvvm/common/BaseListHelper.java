@@ -2,6 +2,13 @@ package net.childman.libmvvm.common;
 
 import android.view.View;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import net.childman.libmvvm.R;
@@ -11,14 +18,7 @@ import net.childman.libmvvm.viewmodel.BaseListViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.RecyclerView;
-
-public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener {
+public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemLongClickListener {
     private LifecycleOwner mLifecycleOwner;
     private DataBindingAdapter<T> mAdapter;
     private BaseListViewModel<T> mViewModel;
@@ -45,6 +45,7 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener {
         },recyclerView);
         mAdapter.disableLoadMoreIfNotFullPage();
         mAdapter.setOnItemClickListener(this);
+        mAdapter.setOnItemLongClickListener(this);
 
         if(mViewModel.getDataList().size()>0){
             setNewData(mViewModel.getDataList());
@@ -158,12 +159,22 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener {
         }
     }
 
+    @Override
+    public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+        if(mOnItemEventListener != null){
+            T item = mAdapter.getItem(position);
+            return mOnItemEventListener.onItemLongClick(item);
+        }
+        return false;
+    }
+
     public interface OnListDataChangeListener{
         void onListDataChanged();
     }
 
     public interface OnItemEventListener<T>{
         void onItemClick(T item);
+        boolean onItemLongClick(T item);
     }
 
     public void setOnListDataChangeListener(OnListDataChangeListener onListDataChangeListener) {
