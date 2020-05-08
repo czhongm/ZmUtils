@@ -98,7 +98,7 @@ public abstract class BaseDataBindingFragment<T extends BaseViewModel,E extends 
      */
     protected void listenEvent(){
         if(mViewModel == null) return;
-        mUiAction.listenEvent(mViewModel,this);
+        mUiAction.listenEvent(mViewModel,getViewLifecycleOwner());
     }
 
     protected boolean useActivityViewModel(){

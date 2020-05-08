@@ -33,7 +33,7 @@ public abstract class BaseListFragment<T,E extends ViewDataBinding> extends Base
     }
 
     protected BaseListHelper<T> createHelper(){
-        return new BaseListHelper<>(this,mViewModel);
+        return new BaseListHelper<>(getViewLifecycleOwner(),mViewModel);
     }
 
     protected abstract @NonNull RecyclerView getRecyclerView();
