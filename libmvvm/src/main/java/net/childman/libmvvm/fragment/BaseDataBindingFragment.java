@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import net.childman.libmvvm.BR;
 import net.childman.libmvvm.common.DataBindingUiAction;

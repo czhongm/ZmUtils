@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.trello.rxlifecycle3.components.support.RxFragment;
+import com.trello.rxlifecycle4.components.support.RxFragment;
 
 import net.childman.libmvvm.common.UiAction;
 

@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.LifecycleOwner;
+
 import net.childman.libmvvm.R;
 import net.childman.libmvvm.dialog.LoadingDialog;
 import net.childman.libmvvm.viewmodel.BaseViewModel;

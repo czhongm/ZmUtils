@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+
 import net.childman.libmvvm.R;
 import net.childman.libmvvm.viewmodel.BaseViewModel;
 

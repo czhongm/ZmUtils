@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.core.content.ContextCompat;
+
 import net.childman.libmvvm.R;
 
 

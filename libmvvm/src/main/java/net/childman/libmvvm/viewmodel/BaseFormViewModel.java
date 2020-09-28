@@ -1,14 +1,15 @@
 package net.childman.libmvvm.viewmodel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+
 import net.childman.libmvvm.validator.BaseValidator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BaseFormViewModel extends BaseViewModel {
     private List<BaseValidator> mValidators = new ArrayList<>();

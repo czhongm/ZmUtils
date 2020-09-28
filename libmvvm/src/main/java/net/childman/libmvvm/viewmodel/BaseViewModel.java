@@ -12,13 +12,13 @@ import net.childman.libmvvm.utils.SingleLiveEvent;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
-import io.reactivex.Flowable;
-import io.reactivex.FlowableTransformer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.FlowableTransformer;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
 
 /**
  * 基础ViewModel类
@@ -47,7 +47,7 @@ public class BaseViewModel extends ViewModel {
     /**
      * 提示/错误/loading 数据类
      */
-    public class MsgData{
+    public static class MsgData{
         private @StringRes int msgResId;
         private String msg;
 

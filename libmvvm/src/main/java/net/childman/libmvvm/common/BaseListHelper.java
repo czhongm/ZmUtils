@@ -10,15 +10,20 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnItemLongClickListener;
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 
 import net.childman.libmvvm.R;
 import net.childman.libmvvm.adapter.DataBindingAdapter;
 import net.childman.libmvvm.viewmodel.BaseListViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemLongClickListener {
+public class BaseListHelper<T> implements OnItemClickListener, OnItemLongClickListener {
     private LifecycleOwner mLifecycleOwner;
     private DataBindingAdapter<T> mAdapter;
     private BaseListViewModel<T> mViewModel;
@@ -36,21 +41,23 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener, 
         mRecyclerView = recyclerView;
         mEmptyLayoutRes = emtpyLayoutRes;
         mAdapter = createAdapter(itemLayoutRes);
-        mAdapter.bindToRecyclerView(recyclerView);
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onLoadMoreRequested() {
+            public void onLoadMore() {
                 mViewModel.loadMore();
             }
-        },recyclerView);
-        mAdapter.disableLoadMoreIfNotFullPage();
+        });
+        mAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
+        mAdapter.getLoadMoreModule().setAutoLoadMore(true);
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnItemLongClickListener(this);
 
         if(mViewModel.getDataList().size()>0){
             setNewData(mViewModel.getDataList());
         }else{
-            mAdapter.setEmptyView(R.layout.loading,recyclerView);
+            mAdapter.setEmptyView(R.layout.loading);
             mViewModel.refresh();
         }
     }
@@ -88,28 +95,28 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener, 
         mViewModel.getLoadMoreCompleteEvent().observe(mLifecycleOwner, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                mAdapter.loadMoreComplete();
+                mAdapter.getLoadMoreModule().loadMoreComplete();
             }
         });
 
         mViewModel.getLoadMoreEndEvent().observe(mLifecycleOwner, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                mAdapter.loadMoreEnd(true);
+                mAdapter.getLoadMoreModule().loadMoreEnd(true);
             }
         });
 
         mViewModel.getLoadMoreErrorEvent().observe(mLifecycleOwner, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                mAdapter.loadMoreFail();
+                mAdapter.getLoadMoreModule().loadMoreFail();
             }
         });
 
         mViewModel.getLoadMoreEnableEvent().observe(mLifecycleOwner, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                if(aBoolean!=null) mAdapter.setEnableLoadMore(aBoolean);
+                if(aBoolean!=null) mAdapter.getLoadMoreModule().setEnableLoadMore(aBoolean);
             }
         });
         mViewModel.getDeleteSuccEvent().observe(mLifecycleOwner, new Observer<T>() {
@@ -136,14 +143,14 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener, 
 
     protected void setNewData(List<T> dataList){
         if(mRecyclerView!= null && dataList.size()==0){
-            mAdapter.setEmptyView(mEmptyLayoutRes,mRecyclerView);
+            mAdapter.setEmptyView(mEmptyLayoutRes);
         }
         mAdapter.setNewData(dataList);
     }
     protected void appendData(List<T> dataList){
         mAdapter.addData(dataList);
         if(mRecyclerView != null && mAdapter.getItemCount()==0){
-            mAdapter.setEmptyView(mEmptyLayoutRes,mRecyclerView);
+            mAdapter.setEmptyView(mEmptyLayoutRes);
         }
     }
 
@@ -152,7 +159,7 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener, 
     }
 
     @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+    public void onItemClick(@NotNull BaseQuickAdapter adapter, @NotNull View view, int position) {
         if(mOnItemEventListener != null){
             T item = mAdapter.getItem(position);
             mOnItemEventListener.onItemClick(item);
@@ -160,7 +167,7 @@ public class BaseListHelper<T> implements BaseQuickAdapter.OnItemClickListener, 
     }
 
     @Override
-    public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+    public boolean onItemLongClick(@NotNull BaseQuickAdapter adapter, @NotNull View view, int position) {
         if(mOnItemEventListener != null){
             T item = mAdapter.getItem(position);
             return mOnItemEventListener.onItemLongClick(item);

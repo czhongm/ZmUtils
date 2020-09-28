@@ -1,9 +1,10 @@
 package net.childman.libmvvm.utils;
 
-import com.jakewharton.rxrelay2.PublishRelay;
-import com.jakewharton.rxrelay2.Relay;
 
-import io.reactivex.Observable;
+import com.jakewharton.rxrelay3.PublishRelay;
+import com.jakewharton.rxrelay3.Relay;
+
+import io.reactivex.rxjava3.core.Observable;
 
 public class RxBus {
 

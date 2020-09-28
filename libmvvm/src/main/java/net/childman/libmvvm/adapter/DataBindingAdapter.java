@@ -4,7 +4,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.module.LoadMoreModule;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import java.util.List;
 
@@ -14,7 +15,9 @@ import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import net.childman.libmvvm.BR;
 
-public class DataBindingAdapter<T> extends BaseQuickAdapter<T,DataBindingAdapter.ViewHolder> {
+import org.jetbrains.annotations.NotNull;
+
+public class DataBindingAdapter<T> extends BaseQuickAdapter<T,BaseViewHolder> implements LoadMoreModule {
     protected ViewModel mViewModel;
 
     public DataBindingAdapter(int layoutResId, @Nullable List<T> data) {
@@ -26,25 +29,6 @@ public class DataBindingAdapter<T> extends BaseQuickAdapter<T,DataBindingAdapter
         mViewModel = viewModel;
     }
 
-    @Override
-    protected void convert(ViewHolder helper, T item) {
-        ViewDataBinding viewDataBinding = helper.getDataBinding();
-        viewDataBinding.setVariable(BR.item,item);
-        viewDataBinding.setVariable(BR.viewModel,mViewModel);
-        viewDataBinding.executePendingBindings();
-    }
-
-    @Override
-    protected View getItemView(int layoutResId, ViewGroup parent) {
-        ViewDataBinding binding = DataBindingUtil.inflate(mLayoutInflater, layoutResId, parent, false);
-        if (binding == null) {
-            return super.getItemView(layoutResId, parent);
-        }
-        View view = binding.getRoot();
-        view.setTag(com.chad.library.R.id.BaseQuickAdapter_databinding_support, binding);
-        return view;
-    }
-
     public void notifyItemChanged(T item){
         int index = getData().indexOf(item);
         if(index != -1){
@@ -52,12 +36,18 @@ public class DataBindingAdapter<T> extends BaseQuickAdapter<T,DataBindingAdapter
         }
     }
 
-    public static class ViewHolder extends BaseViewHolder {
-        public ViewHolder(View view) {
-            super(view);
-        }
-        public ViewDataBinding getDataBinding(){
-            return (ViewDataBinding)itemView.getTag(com.chad.library.R.id.BaseQuickAdapter_databinding_support);
+    @Override
+    protected void onItemViewHolderCreated(@NotNull BaseViewHolder viewHolder, int viewType) {
+        DataBindingUtil.bind(viewHolder.itemView);
+    }
+
+    @Override
+    protected void convert(@NotNull BaseViewHolder baseViewHolder, T item) {
+        ViewDataBinding viewDataBinding = baseViewHolder.getBinding();
+        if(viewDataBinding != null) {
+            viewDataBinding.setVariable(BR.item, item);
+            viewDataBinding.setVariable(BR.viewModel, mViewModel);
+            viewDataBinding.executePendingBindings();
         }
     }
 }

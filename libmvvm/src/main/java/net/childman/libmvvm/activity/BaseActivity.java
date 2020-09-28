@@ -19,7 +19,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.ViewDataBinding;
 
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
+
+import com.trello.rxlifecycle4.components.support.RxAppCompatActivity;
 
 import net.childman.libmvvm.R;
 import net.childman.libmvvm.common.UiAction;

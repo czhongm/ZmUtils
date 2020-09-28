@@ -1,6 +1,7 @@
 package net.childman.libmvvm.validator;
 
 import androidx.lifecycle.LiveData;
+
 import net.childman.libmvvm.utils.CommonUtils;
 
 /**

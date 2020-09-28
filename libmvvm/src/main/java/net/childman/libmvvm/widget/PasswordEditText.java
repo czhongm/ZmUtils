@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
+
 import net.childman.libmvvm.R;
 
 public class PasswordEditText extends AppCompatEditText {

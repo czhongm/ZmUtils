@@ -4,6 +4,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
+
 import net.childman.libmvvm.R;
 import net.childman.libmvvm.common.BaseListHelper;
 import net.childman.libmvvm.viewmodel.BaseListViewModel;
