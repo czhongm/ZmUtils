@@ -8,6 +8,9 @@ import android.view.View;
 import net.childman.libmvvm.activity.BaseActivity;
 import net.childman.libmvvm.dialog.ProgressDialog;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";

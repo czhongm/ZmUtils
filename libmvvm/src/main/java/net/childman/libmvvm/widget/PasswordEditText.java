@@ -96,7 +96,7 @@ public class PasswordEditText extends AppCompatEditText {
 
     private Drawable getVectorDrawable(Context context, @DrawableRes int drawableResId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return context.getDrawable(drawableResId);
+            return ContextCompat.getDrawable(context, drawableResId);
         } else {
             return VectorDrawableCompat.create(context.getResources(), drawableResId, context.getTheme());
         }

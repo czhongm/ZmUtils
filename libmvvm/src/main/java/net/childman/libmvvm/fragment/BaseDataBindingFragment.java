@@ -19,7 +19,6 @@ import net.childman.libmvvm.viewmodel.BaseViewModel;
 public abstract class BaseDataBindingFragment<T extends BaseViewModel,E extends ViewDataBinding> extends BaseFragment {
     protected T mViewModel;
     protected E mDataBinding;
-    protected View mRootView;
 
     @Override
     protected void initUiAction() {
@@ -29,23 +28,16 @@ public abstract class BaseDataBindingFragment<T extends BaseViewModel,E extends 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(mRootView != null){
-            ViewGroup parent = (ViewGroup) mRootView.getParent();
-            if (null != parent) {
-                parent.removeView(mRootView);
-            }
-        }else {
-            mDataBinding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false);
-            mRootView = mDataBinding.getRoot();
-            if(useActivityViewModel() && this.getActivity()!=null){
-                mViewModel = new ViewModelProvider(requireActivity()).get(getViewModelClass());
-            }else{
-                mViewModel = new ViewModelProvider(this).get(getViewModelClass());
-            }
-            mDataBinding.setVariable(BR.viewModel, mViewModel);
-            mDataBinding.setLifecycleOwner(this);
+        mDataBinding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false);
+        View rootView = mDataBinding.getRoot();
+        if(useActivityViewModel() && this.getActivity()!=null){
+            mViewModel = new ViewModelProvider(requireActivity()).get(getViewModelClass());
+        }else{
+            mViewModel = new ViewModelProvider(this).get(getViewModelClass());
         }
-        return mRootView;
+        mDataBinding.setVariable(BR.viewModel, mViewModel);
+        mDataBinding.setLifecycleOwner(this);
+        return rootView;
     }
 
     @Override
@@ -59,7 +51,6 @@ public abstract class BaseDataBindingFragment<T extends BaseViewModel,E extends 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mRootView = null;
         mDataBinding.unbind();
         mDataBinding = null;
         mViewModel = null;
