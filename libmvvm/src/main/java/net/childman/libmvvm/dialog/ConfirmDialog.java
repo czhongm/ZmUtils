@@ -25,7 +25,7 @@ public class ConfirmDialog extends Dialog {
     }
 
     public static class Builder {
-        private Context context;
+        private final Context context;
         private String title;
         private String message;
         private String positiveButtonText;

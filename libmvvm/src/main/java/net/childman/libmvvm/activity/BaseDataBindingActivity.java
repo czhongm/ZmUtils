@@ -69,7 +69,6 @@ public abstract class BaseDataBindingActivity<T extends BaseViewModel,E extends 
     }
 
     protected void initView() {
-        initToolbar(mDataBinding, R.id.toolbar);
     }
 
     /**

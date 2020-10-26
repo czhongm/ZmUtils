@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BaseListHelper<T> implements OnItemClickListener, OnItemLongClickListener {
-    private LifecycleOwner mLifecycleOwner;
+    private final LifecycleOwner mLifecycleOwner;
     private DataBindingAdapter<T> mAdapter;
-    private BaseListViewModel<T> mViewModel;
+    private final BaseListViewModel<T> mViewModel;
     private OnListDataChangeListener mOnListDataChangeListener;
     private OnItemEventListener<T> mOnItemEventListener;
     private int mEmptyLayoutRes;

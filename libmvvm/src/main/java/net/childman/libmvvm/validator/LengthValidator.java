@@ -1,7 +1,5 @@
 package net.childman.libmvvm.validator;
 
-import android.text.TextUtils;
-
 import androidx.lifecycle.LiveData;
 
 /**
@@ -10,25 +8,25 @@ import androidx.lifecycle.LiveData;
 public class LengthValidator extends BaseValidator<String> {
     private int minLen=1;
     private int maxLen=Integer.MAX_VALUE;
-    public LengthValidator(LiveData<String> data, int errMsg) {
-        super(data, errMsg);
+    public LengthValidator(LiveData<String> data, int destId, int errMsg) {
+        super(data, destId, errMsg);
     }
 
-    public LengthValidator(LiveData<String> data, int errMsg, int minLen) {
-        super(data, errMsg);
+    public LengthValidator(LiveData<String> data, int destId, int errMsg, int minLen) {
+        super(data, destId, errMsg);
         this.minLen = minLen;
     }
 
-    public LengthValidator(LiveData<String> data, int errMsg, int minLen,int maxLen) {
-        super(data, errMsg);
+    public LengthValidator(LiveData<String> data, int destId, int errMsg, int minLen,int maxLen) {
+        super(data, destId, errMsg);
         this.minLen = minLen;
         this.maxLen = maxLen;
     }
 
     @Override
-    public boolean isValid() {
-        if(TextUtils.isEmpty(mData.getValue())) return false;
-        int length = mData.getValue().length();
-        return length>=minLen && length<=maxLen;
+    public boolean isInvalid() {
+        String value = mData.getValue();
+        if(value == null || value.length()==0) return true;
+        return value.length()<minLen || value.length()>maxLen;
     }
 }

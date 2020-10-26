@@ -8,29 +8,28 @@ import java.util.List;
 
 public class NoEmptyValidator<T> extends BaseValidator<T> {
     private boolean needTrim = false;
-    public NoEmptyValidator(LiveData<T> data, int errMsg) {
-        super(data, errMsg);
+    public NoEmptyValidator(LiveData<T> data, int destId, int errMsg) {
+        super(data, destId, errMsg);
     }
-    public NoEmptyValidator(LiveData<T> data, int errMsg, boolean needTrim) {
-        super(data, errMsg);
+    public NoEmptyValidator(LiveData<T> data, int destId, int errMsg, boolean needTrim) {
+        super(data, destId, errMsg);
         this.needTrim = needTrim;
     }
 
     @Override
-    public boolean isValid() {
-        if(mData.getValue() == null) return false;
-        if(mData.getValue() instanceof String){
-            String s = (String)mData.getValue();
+    public boolean isInvalid() {
+        T value = mData.getValue();
+        if(value == null) return true;
+        if(value instanceof String){
+            String s = (String)value;
             if(needTrim){
-                if(s == null) return false;
-                return !TextUtils.isEmpty(s.trim());
-            }else {
-                return !TextUtils.isEmpty(s);
+                s = s.trim();
             }
-        }else if(mData.getValue() instanceof List){
-            List list = (List) mData.getValue();
-            return !list.isEmpty();
+            return TextUtils.isEmpty(s);
+        }else if(value instanceof List){
+            List<?> list = (List<?>) mData.getValue();
+            return list.isEmpty();
         }
-        return true;
+        return false;
     }
 }

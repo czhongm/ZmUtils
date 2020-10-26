@@ -1,21 +1,19 @@
 package net.childman.libmvvm.adapter;
 
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.ViewModel;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
-import java.util.List;
-
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.ViewModel;
 import net.childman.libmvvm.BR;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class DataBindingAdapter<T> extends BaseQuickAdapter<T,BaseViewHolder> implements LoadMoreModule {
     protected ViewModel mViewModel;

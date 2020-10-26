@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import net.childman.libmvvm.BuildConfig;
 import net.childman.libmvvm.utils.SingleLiveEvent;
 
+import org.jetbrains.annotations.NotNull;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
@@ -72,11 +73,11 @@ public class BaseViewModel extends ViewModel {
         }
     }
 
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private final SingleLiveEvent<MsgData> uploadEvent = new SingleLiveEvent<>();
     private final SingleLiveEvent<MsgData> errorEvent = new SingleLiveEvent<>();
     private final SingleLiveEvent<MsgData> tipEvent = new SingleLiveEvent<>();
-    private MutableLiveData<Boolean> uploading = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> uploading = new MutableLiveData<>();
     private final SingleLiveEvent<Integer> clickEvent = new SingleLiveEvent<>();
 
     public SingleLiveEvent<MsgData> getUploadEvent() {
@@ -98,7 +99,7 @@ public class BaseViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        if(mCompositeDisposable != null) mCompositeDisposable.dispose();
+        mCompositeDisposable.dispose();
     }
 
     protected void showError(String error){
@@ -164,6 +165,7 @@ public class BaseViewModel extends ViewModel {
 
     public class UploadingTransformer<T> implements FlowableTransformer<T, T> {
 
+        @NotNull
         @Override
         public Publisher<T> apply(Flowable<T> upstream) {
             return upstream

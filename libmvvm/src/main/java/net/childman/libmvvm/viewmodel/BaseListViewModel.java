@@ -22,7 +22,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public abstract class BaseListViewModel<T> extends BaseViewModel {
     protected int mPageSize = 15;
     protected int mTotalNum;
-    private List<T> mDataList = new ArrayList<>();
+    private final List<T> mDataList = new ArrayList<>();
     public final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
     protected final MutableLiveData<List<T>> loadEvent = new MutableLiveData<>();
@@ -97,7 +97,7 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
      */
     public void refresh() {
         if (mRefreshDisposable != null && !mRefreshDisposable.isDisposed()) return;
-        Flowable<IDataResult<List<T>>> flowable = fetchList(1, mPageSize);
+        Flowable<? extends IDataResult<List<T>>> flowable = fetchList(1, mPageSize);
         if(flowable == null) return;
         mRefreshDisposable = flowable
                 .subscribeOn(Schedulers.io())
@@ -174,7 +174,7 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
             loadMoreErrorEvent.setValue(true);
             return;
         }
-        Flowable<IDataResult<List<T>>> flowable = fetchList(mCurrentPage + 1, mPageSize);
+        Flowable<? extends IDataResult<List<T>>> flowable = fetchList(mCurrentPage + 1, mPageSize);
         if(flowable == null) return;
         mRefreshDisposable = flowable
                 .subscribe(new Consumer<IDataResult<List<T>>>() {
@@ -205,9 +205,9 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
         addDisposable(mRefreshDisposable);
     }
 
-    protected abstract Flowable<IDataResult<List<T>>> fetchList(int page, int limit);
+    protected abstract Flowable<? extends IDataResult<List<T>>> fetchList(int page, int limit);
 
-    protected Flowable<IDataResult<String>> deleteMethod(T item) {
+    protected Flowable<? extends IDataResult<String>> deleteMethod(T item) {
         return null;
     }
 
@@ -224,7 +224,7 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
     }
 
     public void delete(final T item) {
-        Flowable<IDataResult<String>> delMethod = deleteMethod(item);
+        Flowable<? extends IDataResult<String>> delMethod = deleteMethod(item);
         if (delMethod == null) return;
         Disposable disposable = delMethod
                 .compose(this.<IDataResult<String>>applyUploading())

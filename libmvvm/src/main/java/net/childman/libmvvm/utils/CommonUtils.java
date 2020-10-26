@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommonUtils {
-    private static SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+    private static final SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
     private static final String BARCODE_PREFIX = "zhidou:";
 
     public static boolean isChinaPhoneLegal(String str){
