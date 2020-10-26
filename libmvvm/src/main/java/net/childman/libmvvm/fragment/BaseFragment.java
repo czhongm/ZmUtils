@@ -1,8 +1,11 @@
 package net.childman.libmvvm.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.transition.Transition;
+import androidx.transition.TransitionInflater;
 
 import com.trello.rxlifecycle4.components.support.RxFragment;
 
@@ -15,6 +18,11 @@ public class BaseFragment extends RxFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUiAction();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Transition transition = TransitionInflater.from(requireContext())
+                    .inflateTransition(android.R.transition.move);
+            setSharedElementEnterTransition(transition);
+        }
     }
 
     @Override
@@ -23,7 +31,7 @@ public class BaseFragment extends RxFragment {
         mUiAction = null;
     }
 
-    protected void initUiAction(){
+    protected void initUiAction() {
         mUiAction = new UiAction(getContext());
     }
 }
