@@ -141,7 +141,7 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
                         }
                         mCurrentPage = 1;
                     }
-                }, mThrowableConsumer);
+                }, this::processError);
         addDisposable(mRefreshDisposable);
     }
 
@@ -185,14 +185,14 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
                         List<T> dataList = listServerResult.getData();
                         loadMoreEvent.setValue(dataList);
                         mDataList.addAll(dataList);
-                        if(mTotalNum == 0){ //如果获取不到总数的话
-                            if(dataList.size()<mPageSize){ //小于分页数，表示结束了
+                        if (mTotalNum == 0) { //如果获取不到总数的话
+                            if (dataList.size() < mPageSize) { //小于分页数，表示结束了
                                 loadMoreEndEvent.setValue(true);
-                            }else{
+                            } else {
                                 loadMoreCompleteEvent.setValue(true);
                             }
                             mTotalNum = mDataList.size();
-                        }else {
+                        } else {
                             if (isSinglePage() || mDataList.size() >= mTotalNum) {
                                 loadMoreEndEvent.setValue(true); //
                             } else {
@@ -201,7 +201,7 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
                         }
                         mCurrentPage++;
                     }
-                }, mThrowableConsumer);
+                }, this::processError);
         addDisposable(mRefreshDisposable);
     }
 
@@ -235,7 +235,7 @@ public abstract class BaseListViewModel<T> extends BaseViewModel {
                         mTotalNum--; //???这里需要么
                         mDataList.remove(item);
                     }
-                }, mThrowableConsumer);
+                }, this::processError);
         addDisposable(disposable);
     }
 }

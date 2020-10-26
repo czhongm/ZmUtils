@@ -137,15 +137,9 @@ public class BaseViewModel extends ViewModel {
     /**
      * 通用的错误捕捉方法
      */
-    protected Consumer<Throwable> mThrowableConsumer = new Consumer<Throwable>() {
-        @Override
-        public void accept(Throwable throwable) throws Exception {
-            showError(throwable.getMessage());
-            if(BuildConfig.DEBUG) {
-                throwable.printStackTrace();
-            }
-        }
-    };
+    protected void processError(Throwable throwable){
+        showError(throwable.getMessage());
+    }
 
     /**
      * 通用的点击事件
