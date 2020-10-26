@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 
 import net.childman.libmvvm.R;
+
+import java.lang.reflect.Field;
 
 public class Toasty {
     private Toasty() {
@@ -93,6 +96,7 @@ public class Toasty {
         }
         currentToast.setView(toastLayout);
         currentToast.setGravity(Gravity.CENTER,0,0);
+        setContextCompat(currentToast.getView(), new SafeToastContext(context));
         return currentToast;
     }
 
@@ -117,7 +121,20 @@ public class Toasty {
         }
         toast.setGravity(Gravity.CENTER,0,0);
         toast.setDuration(duration);
+        setContextCompat(toast.getView(), new SafeToastContext(context));
         toast.show();
+    }
+
+    private static void setContextCompat(@NonNull View view, @NonNull Context context) {
+        if (Build.VERSION.SDK_INT == 25) {
+            try {
+                Field field = View.class.getDeclaredField("mContext");
+                field.setAccessible(true);
+                field.set(view, context);
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        }
     }
 
 }
