@@ -78,30 +78,4 @@ public abstract class BaseDataBindingActivity<T extends BaseViewModel,E extends 
         if(mViewModel == null) return;
         mUiAction.listenEvent(mViewModel,this);
     }
-
-    @Override
-    public void onBackPressed() {
-        if(mViewModel.isChanged()){ //如果有变动
-            ConfirmDialog dialog = new ConfirmDialog.Builder(this)
-                    .setTitle(R.string.not_save_title)
-                    .setMessage(R.string.not_save_msg)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                            finish();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .create();
-            dialog.show();
-        }else {
-            super.onBackPressed();
-        }
-    }
 }
