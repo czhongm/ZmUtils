@@ -27,24 +27,6 @@ import io.reactivex.rxjava3.functions.Consumer;
  * 一些大部分要用的功能函数
  */
 public class BaseViewModel extends ViewModel {
-
-    private boolean changed = false;
-
-    public boolean isChanged() {
-        return changed;
-    }
-
-    public void setChanged(boolean changed) {
-        this.changed = changed;
-    }
-
-    /**
-     * 设置初始状态
-     */
-    public void updateInitState(){
-        changed = false;
-    }
-
     /**
      * 提示/错误/loading 数据类
      */
@@ -79,6 +61,7 @@ public class BaseViewModel extends ViewModel {
     private final SingleLiveEvent<MsgData> tipEvent = new SingleLiveEvent<>();
     private final MutableLiveData<Boolean> uploading = new MutableLiveData<>();
     private final SingleLiveEvent<Integer> clickEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Throwable> throwableEvent = new SingleLiveEvent<>();
 
     public SingleLiveEvent<MsgData> getUploadEvent() {
         return uploadEvent;
@@ -94,6 +77,10 @@ public class BaseViewModel extends ViewModel {
 
     public SingleLiveEvent<Integer> getClickEvent() {
         return clickEvent;
+    }
+
+    public SingleLiveEvent<Throwable> getThrowableEvent() {
+        return throwableEvent;
     }
 
     @Override
@@ -138,7 +125,7 @@ public class BaseViewModel extends ViewModel {
      * 通用的错误捕捉方法
      */
     protected void processError(Throwable throwable){
-        showError(throwable.getMessage());
+        throwableEvent.postValue(throwable);
     }
 
     /**
@@ -179,5 +166,4 @@ public class BaseViewModel extends ViewModel {
                     });
         }
     }
-
 }

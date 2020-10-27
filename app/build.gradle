@@ -73,6 +73,7 @@ dependencies {
     implementation 'com.trello.rxlifecycle4:rxlifecycle-components:4.0.0'
     implementation 'com.jakewharton.rxrelay3:rxrelay:3.0.0'
     implementation 'com.jakewharton.rxbinding4:rxbinding-core:4.0.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     //RecyclerViewAdapter
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'

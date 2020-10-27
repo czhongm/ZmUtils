@@ -1,5 +1,7 @@
 package net.childman.libmvvm.viewmodel;
 
+import android.util.Pair;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -16,9 +18,54 @@ public class BaseFormViewModel extends BaseViewModel {
     private final List<BaseValidator<?>> mValidators = new ArrayList<>();
     public final MutableLiveData<Boolean> formIsValid = new MutableLiveData<>();
     public final SingleLiveEvent<FormErrorData> formErrorEvent = new SingleLiveEvent<>();
+    public final MutableLiveData<Boolean> formChanged = new MutableLiveData<>();
+
+    private final List<Pair<LiveData<?>,Object>> mListenChangeFields = new ArrayList<>();
+
+    /**
+     * 保存初始状态
+     */
+    public void saveInitState(@NonNull LifecycleOwner owner, LiveData<?>... items){
+        for(Pair<LiveData<?>,Object> field : mListenChangeFields) {
+            field.first.removeObserver(mChangeObserver);
+        }
+        mListenChangeFields.clear();
+        for(LiveData<?> item : items){
+            mListenChangeFields.add(new Pair<>(item,item.getValue()));
+            item.observe(owner,mChangeObserver);
+        }
+    }
+
+    protected boolean isRealTimeCheck(){
+        return false;
+    }
+
+    private final Observer<Object> mChangeObserver = new Observer() {
+        @Override
+        public void onChanged(Object o) {
+            checkChanged();
+        }
+    };
+
+    private void checkChanged() {
+        for(Pair<LiveData<?>,Object> field : mListenChangeFields){
+            if(field.first.getValue()==null){
+                if(field.second != null){
+                    formChanged.setValue(true);
+                    return;
+                }
+            }else if(!field.first.getValue().equals(field.second)){
+                formChanged.setValue(true);
+                return;
+            }
+        }
+        formChanged.setValue(false);
+    }
+
     private final Observer<Object> mObserver = new Observer() {
         @Override
         public void onChanged(Object o) {
+            formErrorEvent.setValue(null); //输入的时候清空错误
             formIsValid.setValue(checkFormValid());
         }
     };
@@ -71,6 +118,9 @@ public class BaseFormViewModel extends BaseViewModel {
     protected boolean checkFormValid(){
         for (BaseValidator<?> validator : mValidators) {
             if (validator.isInvalid()) {
+                if(isRealTimeCheck()){ //如果实时校验的话，弹出错误
+                    formErrorEvent.setValue(new FormErrorData(validator.getDestId(),validator.getErrMsg()));
+                }
                 return false;
             }
         }
