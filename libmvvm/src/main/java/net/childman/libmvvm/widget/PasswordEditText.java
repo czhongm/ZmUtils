@@ -58,6 +58,8 @@ public class PasswordEditText extends AppCompatEditText {
                     0, 0);
             try {
                 useStrikeThrough = a.getBoolean(R.styleable.PasswordView_useStrikeThrough, false);
+                eye = a.getDrawable(R.styleable.PasswordView_showDrawable);
+                eyeWithStrike = a.getDrawable(R.styleable.PasswordView_hideDrawable);
             } finally {
                 a.recycle();
             }
@@ -67,10 +69,13 @@ public class PasswordEditText extends AppCompatEditText {
         boolean isIconDark = isDark(enabledColor);
         alphaEnabled = (int) (255 * (isIconDark ? ALPHA_ENABLED_DARK : ALPHA_ENABLED_LIGHT));
         alphaDisabled = (int) (255 * (isIconDark ? ALPHA_DISABLED_DARK : ALPHA_DISABLED_LIGHT));
-
-        eye = getToggleDrawable(getContext(), R.drawable.ic_show_password, enabledColor);
-        eyeWithStrike = getToggleDrawable(getContext(), R.drawable.ic_hidden_password, enabledColor);
-        eyeWithStrike.setAlpha(alphaEnabled);
+        if(eye == null) {
+            eye = getToggleDrawable(getContext(), R.drawable.ic_show_password, enabledColor);
+        }
+        if(eyeWithStrike == null) {
+            eyeWithStrike = getToggleDrawable(getContext(), R.drawable.ic_hidden_password, enabledColor);
+            eyeWithStrike.setAlpha(alphaEnabled);
+        }
         setup();
     }
 

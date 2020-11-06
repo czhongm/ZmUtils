@@ -61,5 +61,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView1"
             android:drawableEnd="@drawable/ic_show_password" />
+
+        <net.childman.libmvvm.widget.PasswordEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:useStrikeThrough="true"
+            app:showDrawable="@drawable/ic_password_view"
+            app:hideDrawable="@drawable/ic_password_not_view"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

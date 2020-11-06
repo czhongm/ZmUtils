@@ -13,6 +13,8 @@
     </declare-styleable>
     <declare-styleable name="PasswordView">
         <attr name="useStrikeThrough" format="boolean" />
+        <attr name="showDrawable" format="reference" />
+        <attr name="hideDrawable" format="reference" />
     </declare-styleable>
     <declare-styleable name="CircleSeekBar">
         <attr name="wheel_max_process" format="integer" />
