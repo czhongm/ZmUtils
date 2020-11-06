@@ -58,8 +58,8 @@ public class PasswordEditText extends AppCompatEditText {
                     0, 0);
             try {
                 useStrikeThrough = a.getBoolean(R.styleable.PasswordView_useStrikeThrough, false);
-                eye = a.getDrawable(R.styleable.PasswordView_showDrawable);
-                eyeWithStrike = a.getDrawable(R.styleable.PasswordView_hideDrawable);
+                eye = a.getDrawable(R.styleable.PasswordView_showDrawable).mutate();
+                eyeWithStrike = a.getDrawable(R.styleable.PasswordView_hideDrawable).mutate();
             } finally {
                 a.recycle();
             }
@@ -113,7 +113,7 @@ public class PasswordEditText extends AppCompatEditText {
         setInputType(InputType.TYPE_CLASS_TEXT | (visible ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_TEXT_VARIATION_PASSWORD));
         setSelection(start, end);
         Drawable drawable = useStrikeThrough && !visible ? eyeWithStrike : eye;
-        Drawable[] drawables = getCompoundDrawables();
+        Drawable[] drawables = getCompoundDrawablesRelative();
         setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawable, drawables[3]);
         eye.setAlpha(visible && !useStrikeThrough ? alphaEnabled : alphaDisabled);
     }
