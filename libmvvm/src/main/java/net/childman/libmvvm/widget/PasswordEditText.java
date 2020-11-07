@@ -149,14 +149,6 @@ public class PasswordEditText extends AppCompatEditText {
         setTypeface(typeface);
     }
 
-    @Override public void setError(CharSequence error) {
-        throw new RuntimeException("Please use TextInputLayout.setError() instead!");
-    }
-
-    @Override public void setError(CharSequence error, Drawable icon) {
-        throw new RuntimeException("Please use TextInputLayout.setError() instead!");
-    }
-
     public void setUseStrikeThrough(boolean useStrikeThrough) {
         this.useStrikeThrough = useStrikeThrough;
     }
