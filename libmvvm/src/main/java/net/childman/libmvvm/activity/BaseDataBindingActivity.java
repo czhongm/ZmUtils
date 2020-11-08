@@ -57,9 +57,9 @@ public abstract class BaseDataBindingActivity<T extends BaseViewModel,E extends 
      */
     protected abstract Class<? extends T> getViewModelClass();
 
-    protected T getViewModel(Class<T> tClass){
+    protected <K> K getViewModel(Class<K> tClass){
         if(tClass.isInstance(mViewModel)){
-            return (T)mViewModel;
+            return (K)mViewModel;
         }
         return null;
     }

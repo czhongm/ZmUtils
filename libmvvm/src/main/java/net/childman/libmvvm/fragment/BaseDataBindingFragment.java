@@ -64,9 +64,9 @@ public abstract class BaseDataBindingFragment<T extends BaseViewModel,E extends 
 
     }
 
-    protected T getViewModel(Class<T> tClass){
+    protected <K> K getViewModel(Class<K> tClass){
         if(tClass.isInstance(mViewModel)){
-            return (T)mViewModel;
+            return (K)mViewModel;
         }
         return null;
     }
