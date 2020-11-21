@@ -3,6 +3,8 @@ package net.childman.libmvvm.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,7 +149,11 @@ public class ConfirmDialog extends Dialog {
             LinearLayout lyContent = layout.findViewById(R.id.dialog_content);
             View verLine = layout.findViewById(R.id.ver_line);
 
-            tvTitle.setText(title);
+            if(TextUtils.isEmpty(title)){
+                tvTitle.setVisibility(View.GONE);
+            }else {
+                tvTitle.setText(title);
+            }
             if (positiveButtonText != null) {
                 tvOkBtn.setText(positiveButtonText);
                 if (positiveButtonClickListener != null) {
@@ -179,7 +185,7 @@ public class ConfirmDialog extends Dialog {
                 verLine.setVisibility(View.GONE);
             }
             if (message != null) {
-                tvMessage.setText(message);
+                tvMessage.setText(Html.fromHtml(message));
             } else if (contentView != null) {
                 lyContent.removeAllViews();
                 lyContent.addView(
