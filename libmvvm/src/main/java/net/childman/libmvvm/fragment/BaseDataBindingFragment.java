@@ -92,6 +92,6 @@ public abstract class BaseDataBindingFragment<T extends BaseViewModel,E extends 
     }
 
     protected boolean useActivityViewModel(){
-        return true;
+        return false;
     }
 }
