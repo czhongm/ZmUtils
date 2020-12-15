@@ -14,25 +14,20 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_min="115dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_max="300dp"
         app:layout_constraintWidth_min="115dp">
 
         <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_margin="8dp"
             android:drawablePadding="8dp"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="13sp"
-            tools:drawableTop="@drawable/error"
+            android:textSize="16sp"
+            tools:drawableStart="@drawable/error"
             tools:text="操作失败" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

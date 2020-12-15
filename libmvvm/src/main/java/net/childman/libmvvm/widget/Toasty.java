@@ -90,7 +90,7 @@ public class Toasty {
         }
         if (drawableFrame != null) {
             drawableFrame.setBounds(0, 0, drawableFrame.getIntrinsicWidth(), (int) (drawableFrame.getMinimumHeight()));
-            toastTextView.setCompoundDrawables(null, drawableFrame, null, null);
+            toastTextView.setCompoundDrawables(drawableFrame, null, null, null);
         } else {
             toastTextView.setCompoundDrawables(null, null, null, null);
         }
@@ -115,7 +115,7 @@ public class Toasty {
         }
         if (drawableFrame != null) {
             drawableFrame.setBounds(0, 0, drawableFrame.getIntrinsicWidth(), (int) (drawableFrame.getMinimumHeight()));
-            toastTextView.setCompoundDrawables(null, drawableFrame, null, null);
+            toastTextView.setCompoundDrawables(drawableFrame, null, null, null);
         } else {
             toastTextView.setCompoundDrawables(null, null, null, null);
         }
