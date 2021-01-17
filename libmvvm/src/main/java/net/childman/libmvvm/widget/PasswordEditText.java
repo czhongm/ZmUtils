@@ -113,7 +113,7 @@ public class PasswordEditText extends AppCompatEditText {
         setInputType(InputType.TYPE_CLASS_TEXT | (visible ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_TEXT_VARIATION_PASSWORD));
         setSelection(start, end);
         Drawable drawable = useStrikeThrough && !visible ? eyeWithStrike : eye;
-        Drawable[] drawables = getCompoundDrawablesRelative();
+        Drawable[] drawables = getCompoundDrawables();
         setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawable, drawables[3]);
         eye.setAlpha(visible && !useStrikeThrough ? alphaEnabled : alphaDisabled);
     }
