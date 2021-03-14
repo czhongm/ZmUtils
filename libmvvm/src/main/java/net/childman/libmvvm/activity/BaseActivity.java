@@ -41,16 +41,21 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         mUiAction = null;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if(id == android.R.id.home){
-//            onBackPressed();
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(useHomeArrow()) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                onBackPressed();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+    protected boolean useHomeArrow(){
+        return true;
+    }
 
     protected void initUiAction(){
         mUiAction = new UiAction(this);

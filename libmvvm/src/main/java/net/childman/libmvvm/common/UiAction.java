@@ -107,6 +107,8 @@ public class UiAction {
         if(mLoadingDialog == null){
             mLoadingDialog = new LoadingDialog.Builder(mContext)
                     .setLayout(mLoadingLayoutRes)
+                    .setCancelable(true)
+                    .setCancelOutside(true)
                     .create();
         }
         mLoadingDialog.setMessage(msg);
